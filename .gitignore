@@ -1,0 +1,22 @@
+# Cocos Creator build & cache directories
+library/
+local/
+temp/
+build/
+profiles/
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+export/
+dist/
+.tmp/
+release.env
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.p8
+*.mobileprovision
