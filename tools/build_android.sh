@@ -100,6 +100,7 @@ if [[ $rc != 36 && $rc != 0 ]]; then
 	echo "Cocos CLI build failed with exit code $rc (36=ok, 32=bad params, 34=build error)" >&2
 	exit 1
 fi
+python3 "$ROOT/tools/apply_custom_splash.py"
 if [[ ! -d "$PROJ_DIR" ]]; then
 	echo "No Gradle project at $PROJ_DIR" >&2
 	exit 1

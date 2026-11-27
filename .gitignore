@@ -20,3 +20,4 @@ release.env
 *.p12
 *.p8
 *.mobileprovision
+.local/

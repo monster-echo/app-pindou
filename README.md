@@ -1,15 +1,12 @@
 # 趣味拼豆工坊 · Pindou
 
-Pindou is a color-by-number game built with Cocos Creator 3.8.6. This repository contains the current Cocos Creator application and store-release automation.
+Pindou 是使用 Cocos Creator 3.8.6 构建的数字填色游戏。仓库包含当前 Cocos Creator 工程和 iOS、Google Play 发布工作流。
 
-## Build and release
+## 发布
 
-- App Store Connect: tagged releases build a signed iOS IPA, upload it to TestFlight, and wait for Apple build processing.
-- Google Play: tagged releases build a signed Android App Bundle, upload it to the internal testing track, and save a production draft.
-- A tag must match `release/version.json`, for example `v1.0.1`.
-- Before each store upload, increase `build` in `release/version.json`; store build numbers must be unique and increasing.
-- GitHub Actions → `release` → Run workflow with `dry_run=true` builds unsigned validation artifacts without signing or uploading to stores.
+- 推送与 `release/version.json` 中版本号一致的 `v*` 标签，会构建 iOS IPA 并上传 TestFlight，同时构建 Android AAB 并上传 Google Play 内测轨道。
+- Play 上传会保留一个 Production 草稿；此流程不会提交 App Store 审核，也不会把 Play 版本发布到正式轨道。
+- 每次上传都必须提高 `release/version.json` 中的 `build`，且 tag 必须和 `version` 一致。
+- 在 GitHub Actions 手动运行 `release` 并设置 `dry_run=true`，可生成未签名构建产物，不会上传商店。
 
-The workflow uses the repository's existing Android, Apple, and Google Play Actions secrets. Android secret labels retain their historical names; their values are not stored in this repository. Never commit signing keys, passwords, certificates, or service-account JSON files.
-
-App Store Connect upload is to TestFlight; it does not submit an App Store version for review. Google Play upload places the build on internal testing and leaves production as a draft.
+工作流使用仓库中已配置的 Android 签名、ASC 和 Google Play Actions secrets。签名密钥、密码、证书及服务账号 JSON 不应提交到仓库。

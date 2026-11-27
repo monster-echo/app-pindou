@@ -1,4 +1,4 @@
-import { _decorator, Component, Graphics, Node, ResolutionPolicy, screen, Sprite, sys, UITransform, view } from 'cc';
+import { _decorator, Component, Graphics, Node, ResolutionPolicy, native, screen, Sprite, sys, UITransform, view } from 'cc';
 import { AdManager } from './core/AdManager';
 import { AudioManager } from './core/AudioManager';
 import { LevelManager } from './core/LevelManager';
@@ -48,11 +48,12 @@ export class PindouApp extends Component {
 
         SaveManager.ins.load();
         AudioManager.ins.init(this.node);
+        // Load sound effects in background so HomeView renders immediately without blocking
+        void AudioManager.ins.loadAll();
 
         await Promise.all([
             ResManager.ins.loadAll(),
             LevelManager.ins.loadAll(),
-            AudioManager.ins.loadAll(),
         ]);
 
         const deskSf = ResManager.ins.getTexture('desk_bg');
@@ -85,6 +86,17 @@ export class PindouApp extends Component {
         AdManager.ins.setOverlayPresenter((meta, onDone) => {
             showRewardedAdOverlay(adHost, this._metrics, meta, onDone);
         });
+
+        // Fade out native iOS launch overlay after HomeView renders its first Metal frame
+        if (sys.isNative && sys.os === sys.OS.IOS) {
+            this.scheduleOnce(() => {
+                try {
+                    native.reflection.callStaticMethod('AppDelegate', 'hideLaunchOverlay:', 'ready');
+                } catch {
+                    // Fallback timeout in AppDelegate still clears the overlay
+                }
+            }, 0.05);
+        }
     }
 
     private _configureResponsiveResolution(): void {

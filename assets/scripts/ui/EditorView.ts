@@ -209,9 +209,13 @@ export class EditorView extends Component {
         // Single clean Pause button (houses Resume, Sound, Restart, Home)
         const pauseBtn = createNode('PauseBtn', bar, 60, 60);
         pauseBtn.setPosition(-312, cy - 2, 0);
-        createUiSprite('Bg', pauseBtn, 'btn_circle_cream', 72, 72)?.node.setPosition(0, -1, 0);
+        createUiSprite('Bg', pauseBtn, 'btn_circle_gold', 72, 72)?.node.setPosition(0, -1, 0);
         const pg = createNode('PauseIcon', pauseBtn, 28, 28).addComponent(Graphics);
-        pg.fillColor = THEME.text;
+        pg.fillColor = new Color(148, 72, 14, 185);
+        pg.roundRect(-8, -12.5, 5.5, 22, 2.5);
+        pg.roundRect(2.5, -12.5, 5.5, 22, 2.5);
+        pg.fill();
+        pg.fillColor = Color.WHITE;
         pg.roundRect(-8, -11, 5.5, 22, 2.5);
         pg.roundRect(2.5, -11, 5.5, 22, 2.5);
         pg.fill();

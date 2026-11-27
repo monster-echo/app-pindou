@@ -12,6 +12,25 @@
     }
   ],
   "startScene": "b7d21f40-6c18-4a53-8e21-20c9a8d5e302",
+  "splashScreen": {
+    "displayRatio": 0.48,
+    "totalTime": 600,
+    "watermarkLocation": "default",
+    "autoFit": true,
+    "logo": {
+      "type": "custom",
+      "image": "settings/splash_logo.png"
+    },
+    "background": {
+      "type": "color",
+      "color": {
+        "x": 1,
+        "y": 0.9686,
+        "z": 0.9333,
+        "w": 1
+      }
+    }
+  },
   "packages": {
     "android": {
       "packageName": "tech.zhongbei.pindou",

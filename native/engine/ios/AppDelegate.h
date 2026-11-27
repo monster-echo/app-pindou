@@ -40,5 +40,7 @@ you.
 @property(nonatomic, readonly) AppDelegateBridge *appDelegateBridge;
 @property(nonatomic, strong) NSDictionary *launchOptions;
 @property(nonatomic, assign) BOOL launchedBridge;
+@property(nonatomic, strong) UIImageView *launchOverlay;
 - (void)startCocosInWindowScene:(UIWindowScene *)windowScene;
++ (void)hideLaunchOverlay:(NSString *)reason;
 @end

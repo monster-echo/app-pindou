@@ -110,6 +110,7 @@ if [[ ! -d "$TEMPLATE_IOS" ]]; then
 fi
 
 cocos_build
+python3 "$ROOT/tools/apply_custom_splash.py"
 
 apply_portrait_fullscreen() {
 	local plist="$1"

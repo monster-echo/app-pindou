@@ -97,6 +97,7 @@
 @synthesize appDelegateBridge;
 @synthesize launchOptions = _savedLaunchOptions;
 @synthesize launchedBridge = _launchedBridge;
+@synthesize launchOverlay = _launchOverlay;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -126,16 +127,56 @@
     }
     self.launchedBridge = YES;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
+    UIColor *creamBg = [UIColor colorWithRed:1.0 green:0.9686 blue:0.9333 alpha:1.0];
+    self.window.backgroundColor = creamBg;
     CGRect bounds = self.window.bounds;
 
     _viewController                           = [[ViewController alloc] init];
     _viewController.view                      = [[View alloc] initWithFrame:bounds];
+    _viewController.view.backgroundColor      = creamBg;
     _viewController.view.contentScaleFactor   = UIScreen.mainScreen.scale;
     _viewController.view.multipleTouchEnabled = true;
+
+    UIImage *launchImg = [UIImage imageNamed:@"LaunchScreenBackground.png"];
+    if (launchImg) {
+        UIImageView *overlay = [[UIImageView alloc] initWithFrame:bounds];
+        overlay.image = launchImg;
+        overlay.contentMode = UIViewContentModeScaleAspectFill;
+        overlay.clipsToBounds = YES;
+        overlay.userInteractionEnabled = NO;
+        overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [_viewController.view addSubview:overlay];
+        self.launchOverlay = overlay;
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [AppDelegate hideLaunchOverlay:@"timeout"];
+        });
+    }
+
     [self.window setRootViewController:_viewController];
 
     [self.window makeKeyAndVisible];
     [appDelegateBridge application:[UIApplication sharedApplication] didFinishLaunchingWithOptions:self.launchOptions];
+}
+
++ (void)hideLaunchOverlay:(NSString *)reason {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        id appDelegate = [UIApplication sharedApplication].delegate;
+        if (![appDelegate isKindOfClass:[AppDelegate class]]) return;
+        AppDelegate *ad = (AppDelegate *)appDelegate;
+        UIImageView *overlay = ad.launchOverlay;
+        if (!overlay) return;
+        ad.launchOverlay = nil;
+        [UIView animateWithDuration:0.22
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             overlay.alpha = 0.0;
+                         }
+                         completion:^(BOOL finished) {
+                             [overlay removeFromSuperview];
+                         }];
+    });
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
