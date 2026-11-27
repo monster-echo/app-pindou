@@ -130,7 +130,7 @@ jobs:
           TARGET_SDK: ${{ env.ANDROID_TARGET_SDK_VERSION }}
           COMPILE_SDK: ${{ env.ANDROID_COMPILE_SDK_VERSION }}
           GRADLE_OPTS: -Dorg.gradle.daemon=false
-        run: ./tools/build_android.sh
+        run: bash tools/build_android.sh
 
       - name: Stage signed AAB
         if: ${{ !inputs.dry_run }}
@@ -279,7 +279,7 @@ jobs:
       - name: Build (Cocos CLI -> Xcode -> IPA)
         env:
           STAGE: ${{ inputs.dry_run && 'sim' || 'ipa' }}
-        run: ./tools/build_ios.sh
+        run: bash tools/build_ios.sh
 
       - name: Stage artifact
         if: ${{ !inputs.dry_run }}
